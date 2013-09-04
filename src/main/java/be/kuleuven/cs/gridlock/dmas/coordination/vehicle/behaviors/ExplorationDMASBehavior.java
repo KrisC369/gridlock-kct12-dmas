@@ -39,9 +39,9 @@ public class ExplorationDMASBehavior implements IElecVehicleBehavior {
         //find optimal sequence of stations.
         //Collection<NodeReference> stations = context.getStationManager().findAllStationsWithinRange(context.getCurrentPosition(), context.getEV().getActionRadius(), 
         //                                                              context.getPassedNodes().toArray(new NodeReference[context.getPassedNodes().size()]));
-        float ar = context.getEV().getActionRadius() / 1000; //convert m to km.
-        float distance = (float) context.calculateRouteReference(context.getCurrentPosition()).resolveDistance(context.getGraphReference());
-        if (true || distance > ar) {//TODO check influence.
+        //float ar = context.getEV().getActionRadius() / 1000; //convert m to km.
+        //float distance = (float) context.calculateRouteReference(context.getCurrentPosition()).resolveDistance(context.getGraphReference());
+        if (true /*|| distance > ar*/) {//TODO check influence.
             Itinerary<NodeReference, VirtualTime> sequence;
             try {
                 sequence = api.getSequenceOfStations(context, currentTime);

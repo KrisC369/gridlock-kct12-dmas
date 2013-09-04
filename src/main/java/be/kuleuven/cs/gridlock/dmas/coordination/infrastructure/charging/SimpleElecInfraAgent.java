@@ -46,7 +46,7 @@ public class SimpleElecInfraAgent implements InfrastructureAgent {
             mess = this.context.getSimulationComponent(CommunicationManager.class).poll(reference.getId());
             System.out.println("ping");
             Message newmess = new Message("test:communication", mess.getReceiver(), mess.getSender());
-            this.context.getSimulationComponent(CommunicationManager.class).sendMessage(mess);
+            this.context.getSimulationComponent(CommunicationManager.class).sendMessage(newmess);
         }
     }
     

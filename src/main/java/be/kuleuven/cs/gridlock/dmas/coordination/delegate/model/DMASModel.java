@@ -32,11 +32,13 @@ import java.util.TreeSet;
 
 /**
  * An implementation of the DMASAPI in a DMASModel.
+ *
  * @author Kristof Coninx <kristof.coninx at student.kuleuven.be>
  */
 public class DMASModel implements IDMASModelAPI, IExplorationContext {
 
     //TODO clean up not using setIpheromone for registrations. This solution delegates to DMASModelComponents.
+    private final long unusedVehRef;
     private final Map<NodeReference, IDMASModelComponent> compLoc;
     private final IExplorationAlgorithm exploration;
     private RoutingService routing;
@@ -47,6 +49,7 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
         this.compLoc = new HashMap<NodeReference, IDMASModelComponent>();
         this.exploration = exploration;
         this.graph = graph;
+        unusedVehRef = -1l;
     }
 
     @Override
@@ -138,10 +141,6 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
         }
     }
 
-    private boolean isValid(IRegistration t) {
-        return true;
-    }
-
     private Collection<IPheromone> getAllPheromones() {
         List<IPheromone> toRetList = new ArrayList<IPheromone>();
         for (NodeReference ref : this.compLoc.keySet()) {
@@ -161,12 +160,7 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
     }
 
     private Set<IRegistration> getRegistrations(NodeReference ref) {
-        Set<IPheromone> phers = getComponent(ref).getRegistrations();
-        Set<IRegistration> ret = new HashSet<IRegistration>();
-        for (IPheromone s : phers) {
-            ret.add(s.getRegistration());
-        }
-        return ret;
+        return getRegistrations(ref, new VehicleReference(unusedVehRef));
     }
 
     private Set<IRegistration> getRegistrations(NodeReference ref, VehicleReference vref) {
@@ -182,22 +176,8 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
 
     @Override
     public VirtualTime getWaitingTimeForSpot(NodeReference ref, int totalChargingSpots, VirtualTime travelTime) {
-        List<IRegistration> regs = asSortedList(getRegistrations(ref));
-        if (regs.size() < totalChargingSpots) {
-            return VirtualTime.createVirtualTime(0);
-        }
-        WaitQueueSim wqs = new WaitQueueSim(regs, totalChargingSpots);
-        ReturnAggr simulateWaiting = wqs.simulateWaiting(travelTime);
-        List<VirtualTime> dep = simulateWaiting.getDeparture();
-        List<VirtualTime> arr = simulateWaiting.getArrival();
-        if (dep.isEmpty()) {
-            return VirtualTime.createVirtualTime(0);
-        }
-        double waitsecs = dep.get(dep.size() - 1).sub(travelTime).getSeconds();
-        if (waitsecs < 0) {
-            return VirtualTime.createVirtualTime(0);
-        }
-        return VirtualTime.createVirtualTime(waitsecs);
+        return internalWaitingTimeForSpot(totalChargingSpots, travelTime, asSortedList(getRegistrations(ref)));
+
     }
 
     private <T extends Comparable<? super T>> List<T> asSortedList(Collection<T> c) {
@@ -214,7 +194,11 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
 
     @Override
     public VirtualTime getWaitingTimeForSpot(NodeReference ref, int totalChargingSpots, VirtualTime travelTime, VehicleReference vehicleReference) {
-        List<IRegistration> regs = asSortedList(getRegistrations(ref, vehicleReference));
+        return internalWaitingTimeForSpot(totalChargingSpots, travelTime, asSortedList(getRegistrations(ref, vehicleReference)));
+    }
+
+    private VirtualTime internalWaitingTimeForSpot(int totalChargingSpots, VirtualTime travelTime, List<IRegistration> regs) {
+
         if (regs.size() < totalChargingSpots) {
             return VirtualTime.createVirtualTime(0);
         }
