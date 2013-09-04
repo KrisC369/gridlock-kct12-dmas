@@ -1,0 +1,2 @@
+be.kuleuven.cs.gridlock.dmas.coordination.infrastructure.charging.SimpleElecInfraAgentFactoryLoader
+be.kuleuven.cs.gridlock.dmas.coordination.infrastructure.delegate.DMASElecInfraAgentFactoryLoader

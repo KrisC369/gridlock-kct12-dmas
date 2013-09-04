@@ -1,0 +1,4 @@
+be.kuleuven.cs.gridlock.dmas.coordination.vehicle.elec.simple.SimpleElecVehicleAgentFactoryLoader
+be.kuleuven.cs.gridlock.dmas.coordination.vehicle.commtest.SimpleCommTestAgentFactoryLoader
+be.kuleuven.cs.gridlock.dmas.coordination.vehicle.elec.behavioral.BehavioralElecVehicleAgentFactoryLoader
+be.kuleuven.cs.gridlock.dmas.coordination.vehicle.elec.behavioral.mixed.MixedBehavioralElecVehicleAgentFactoryLoader
