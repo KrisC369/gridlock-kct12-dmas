@@ -12,17 +12,22 @@ import java.util.TreeSet;
 /**
  * Simulates waiting queues for the dmas Model.
  *
- *
  * @author kristof.coninx ,AT> cs.kuleuven.be
  */
 public final class WaitQueueSim {
 
-    private Set<VirtualTime> events;
-    private List<VirtualTime> starts;
-    private List<VirtualTime> origStarts;
-    private List<VirtualTime> ends;
-    private int cap;
+    private final Set<VirtualTime> events;
+    private final List<VirtualTime> starts;
+    private final List<VirtualTime> origStarts;
+    private final List<VirtualTime> ends;
+    private final int cap;
 
+    /**
+     * Constructor for a waitsim instance.
+     *
+     * @param events all the registrations events.
+     * @param cap The total capacity of the queue.
+     */
     protected WaitQueueSim(Collection<IRegistration> events, int cap) {
         this.events = new TreeSet<VirtualTime>();
         this.starts = new ArrayList<VirtualTime>();
@@ -38,11 +43,17 @@ public final class WaitQueueSim {
         }
     }
 
-    protected DMASModel.ReturnAggr simulateWaiting(VirtualTime stopMark) {
+    /**
+     * Run a simulation run.
+     *
+     * @param stopMark mark to stop the simulation at.
+     * @return a set of returnAggregated results.
+     */
+    protected ReturnAggr simulateWaiting(VirtualTime stopMark) {
         int i = 0;
-        PriorityQueue<VirtualTime> q = new PriorityQueue<VirtualTime>();
-        List<VirtualTime> retA = new ArrayList<VirtualTime>();
-        List<VirtualTime> retB = new ArrayList<VirtualTime>();
+        final PriorityQueue<VirtualTime> q = new PriorityQueue<VirtualTime>();
+        final List<VirtualTime> retA = new ArrayList<VirtualTime>();
+        final List<VirtualTime> retB = new ArrayList<VirtualTime>();
         if (starts.size() > cap) {
             //i=cap-1;
             int count = 0;
@@ -64,8 +75,30 @@ public final class WaitQueueSim {
                     }
                 }
             }
-            return new DMASModel.ReturnAggr(retA, retB);
+            return new ReturnAggr(retA, retB);
         }
-        return new DMASModel.ReturnAggr(starts, ends);
+        return new ReturnAggr(starts, ends);
+    }
+
+    /**
+     * Static wrapper class aggregating the simresults.
+     */
+    public static class ReturnAggr {
+
+        private List<VirtualTime> arrival;
+        private List<VirtualTime> departure;
+
+        public ReturnAggr(List<VirtualTime> arrival, List<VirtualTime> departure) {
+            this.arrival = arrival;
+            this.departure = departure;
+        }
+
+        public List<VirtualTime> getDeparture() {
+            return departure;
+        }
+
+        public List<VirtualTime> getArrival() {
+            return arrival;
+        }
     }
 }

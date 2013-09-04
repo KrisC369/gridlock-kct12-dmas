@@ -2,6 +2,7 @@ package be.kuleuven.cs.gridlock.dmas.coordination.delegate.model;
 
 import be.kuleuven.cs.gridlock.configuration.services.ServiceFactory;
 import be.kuleuven.cs.gridlock.dmas.coordination.delegate.IDMASModelComponent;
+import be.kuleuven.cs.gridlock.dmas.coordination.delegate.model.WaitQueueSim.ReturnAggr;
 import be.kuleuven.cs.gridlock.dmas.coordination.delegate.model.exploration.IExplorationAlgorithm;
 import be.kuleuven.cs.gridlock.dmas.coordination.delegate.model.exploration.NoRoutePossibleException;
 import be.kuleuven.cs.gridlock.dmas.coordination.delegate.pheromones.IPheromone;
@@ -211,24 +212,5 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
             return VirtualTime.createVirtualTime(0);
         }
         return VirtualTime.createVirtualTime(waitsecs);
-    }
-
-    public static class ReturnAggr {
-
-        private List<VirtualTime> arrival;
-        private List<VirtualTime> departure;
-
-        public ReturnAggr(List<VirtualTime> arrival, List<VirtualTime> departure) {
-            this.arrival = arrival;
-            this.departure = departure;
-        }
-
-        public List<VirtualTime> getDeparture() {
-            return departure;
-        }
-
-        public List<VirtualTime> getArrival() {
-            return arrival;
-        }
     }
 }
