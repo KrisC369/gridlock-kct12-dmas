@@ -54,7 +54,7 @@ public class SimpleCommTestAgent extends SimpleVehicleAgent {
         Message retmess;
         if (getComms().hasMessageFor(getReference().getId())) {
             retmess = getComms().poll(this.getReference().getId());
-            System.out.println("pong");
+            System.out.println("pong " + retmess.toString());
         }
     }
 }

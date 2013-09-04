@@ -26,9 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * An implementation of the DMASAPI in a DMASModel.
@@ -164,7 +162,7 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
     }
 
     private Set<IRegistration> getRegistrations(NodeReference ref, VehicleReference vref) {
-        Set<IPheromone> phers = getComponent(ref).getRegistrations();
+        final Set<IPheromone> phers = getComponent(ref).getRegistrations();
         Set<IRegistration> ret = new HashSet<IRegistration>();
         for (IPheromone s : phers) {
             if (s.getOriginRef() != vref.getId()) {
@@ -202,10 +200,9 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
         if (regs.size() < totalChargingSpots) {
             return VirtualTime.createVirtualTime(0);
         }
-        WaitQueueSim wqs = new WaitQueueSim(regs, totalChargingSpots);
+        final WaitQueueSim wqs = new WaitQueueSim(regs, totalChargingSpots);
         ReturnAggr simulateWaiting = wqs.simulateWaiting(travelTime);
         List<VirtualTime> dep = simulateWaiting.getDeparture();
-        List<VirtualTime> arr = simulateWaiting.getArrival();
         if (dep.isEmpty()) {
             return VirtualTime.createVirtualTime(0);
         }
@@ -216,64 +213,7 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
         return VirtualTime.createVirtualTime(waitsecs);
     }
 
-    private class WaitQueueSim {
-
-        Set<VirtualTime> events;
-        List<VirtualTime> starts;
-        List<VirtualTime> origStarts;
-        List<VirtualTime> ends;
-        int cap;
-        int marker;
-
-        public WaitQueueSim(Collection<IRegistration> events, int cap) {
-            this.events = new TreeSet<VirtualTime>();
-            this.starts = new ArrayList<VirtualTime>();
-            this.origStarts = new ArrayList<VirtualTime>();
-            this.ends = new ArrayList<VirtualTime>();
-            this.marker = 0;
-            this.cap = cap;
-            for (IRegistration t : events) {
-                this.events.add(t.getArrivalTime());
-                this.events.add(t.getDepartureTime());
-                this.starts.add(t.getArrivalTime());
-                this.origStarts.add(t.getArrivalTime());
-                this.ends.add(t.getDepartureTime());
-            }
-        }
-
-        public ReturnAggr simulateWaiting(VirtualTime stopMark) {
-            int i = 0;
-            PriorityQueue<VirtualTime> q = new PriorityQueue<VirtualTime>();
-            List<VirtualTime> retA = new ArrayList<VirtualTime>();
-            List<VirtualTime> retB = new ArrayList<VirtualTime>();
-            if (starts.size() > cap) {
-                //i=cap-1;
-                int count = 0;
-                while (i < starts.size() && origStarts.get(i).compareTo(stopMark) < 0) {
-                    while (count < cap && i < starts.size()) {
-                        retA.add(starts.get(i));
-                        retB.add(ends.get(i));
-                        q.add(ends.get(i));
-                        i++;
-                        count++;
-                    }
-                    VirtualTime nextEnd = q.poll();
-                    count--;
-                    for (int k = i; k < starts.size(); k++) {
-                        if (starts.get(k).compareTo(nextEnd) < 0) {
-                            double newS = nextEnd.sub(starts.get(k)).getSeconds();
-                            starts.set(k, nextEnd);
-                            ends.set(k, ends.get(k).add(newS));
-                        }
-                    }
-                }
-                return new ReturnAggr(retA, retB);
-            }
-            return new ReturnAggr(starts, ends);
-        }
-    }
-
-    public class ReturnAggr {
+    public static class ReturnAggr {
 
         private List<VirtualTime> arrival;
         private List<VirtualTime> departure;
