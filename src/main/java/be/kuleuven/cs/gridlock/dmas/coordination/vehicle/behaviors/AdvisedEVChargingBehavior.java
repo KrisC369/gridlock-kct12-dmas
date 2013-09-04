@@ -1,6 +1,5 @@
-package be.kuleuven.cs.gridlock.case1.coordination.vehicle.behaviors;
+package be.kuleuven.cs.gridlock.dmas.coordination.vehicle.behaviors;
 
-import be.kuleuven.cs.gridlock.dmas.coordination.vehicle.behaviors.IElecVehicleBehavior;
 import be.kuleuven.cs.gridlock.dmas.coordination.vehicle.elec.behavioral.IVehicleContext;
 import be.kuleuven.cs.gridlock.simulation.api.NodeReference;
 import be.kuleuven.cs.gridlock.simulation.api.VirtualTime;

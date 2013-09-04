@@ -1,6 +1,5 @@
 package be.kuleuven.cs.gridlock.dmas.coordination.vehicle.behaviors;
 
-import be.kuleuven.cs.gridlock.case1.coordination.vehicle.behaviors.AdvisedEVChargingBehavior;
 import be.kuleuven.cs.gridlock.dmas.coordination.delegate.model.IDMASModelAPI;
 import be.kuleuven.cs.gridlock.dmas.coordination.delegate.pheromones.PheromoneFactory;
 import be.kuleuven.cs.gridlock.simulation.SimulationContext;
