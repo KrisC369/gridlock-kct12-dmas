@@ -41,7 +41,7 @@ public class ExplorationDMASBehavior implements IElecVehicleBehavior {
         //                                                              context.getPassedNodes().toArray(new NodeReference[context.getPassedNodes().size()]));
         //float ar = context.getEV().getActionRadius() / 1000; //convert m to km.
         //float distance = (float) context.calculateRouteReference(context.getCurrentPosition()).resolveDistance(context.getGraphReference());
-        if (true /*|| distance > ar*/) {//TODO check influence.
+        //if (true || distance > ar) {//TODO check influence.
             Itinerary<NodeReference, VirtualTime> sequence;
             try {
                 sequence = api.getSequenceOfStations(context, currentTime);
@@ -49,6 +49,6 @@ public class ExplorationDMASBehavior implements IElecVehicleBehavior {
             } catch (NoRoutePossibleException ex) {
                 //Logger.getLogger(ExplorationDMASBehavior.class.getName()).log(Level.INFO, "No route possible for vehicle{0}", context.getEV().getVehicleEntity().getVehicleReference());
             }
-        }
+        //}
     }
 }
