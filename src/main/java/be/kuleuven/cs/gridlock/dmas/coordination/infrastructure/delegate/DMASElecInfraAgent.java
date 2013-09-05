@@ -39,8 +39,6 @@ public class DMASElecInfraAgent implements InfrastructureAgent, SimulationCompon
 
     private SimulationContext context;
     private final InfrastructureReference reference;
-    private IDMASModelAPI dmasAPI;
-    private IChargingStationReference station;
     private final Set<IPheromone> registrations;
 
     public DMASElecInfraAgent(InfrastructureReference reference) {
@@ -84,11 +82,6 @@ public class DMASElecInfraAgent implements InfrastructureAgent, SimulationCompon
     @Override
     public Collection<? extends SimulationComponent> getSubComponents() {
         return Collections.EMPTY_LIST;
-    }
-
-    @Override
-    public void initializeAPI(IDMASModelAPI api) {
-        this.dmasAPI = api;
     }
 
     @Override

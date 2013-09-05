@@ -9,20 +9,53 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Interface representing Dmas components, ie. charging stations or other
+ * infrastructure elements.
  *
  * @author Kristof Coninx <kristof.coninx at student.kuleuven.be>
  */
-public interface IDMASModelComponent extends APIUser{
-    
-     public InfrastructureReference getInfrastructureReference();
-     
-     public IChargingStationReference getStationDelegate();
-     
-     public void dropRegistration(IPheromone phero);
-     
-     public Set<IPheromone> getRegistrations();
-     
-     public void evaporateDelegate(double timespan);
+public interface IDMASModelComponent {
 
-    public void exploreNode(List<ExplorationAnt> ants, IExplorationContext context);
+    /**
+     * Default getter for infrastructure reference
+     *
+     * @return
+     */
+    InfrastructureReference getInfrastructureReference();
+
+    /**
+     * Default getter for delegated station instance
+     *
+     * @return
+     */
+    IChargingStationReference getStationDelegate();
+
+    /**
+     * Drop a registration pheromone
+     *
+     * @param phero
+     */
+    void dropRegistration(IPheromone phero);
+
+    /**
+     * Get all registrations
+     *
+     * @return
+     */
+    Set<IPheromone> getRegistrations();
+
+    /**
+     * Evaporate all information
+     *
+     * @param timespan
+     */
+    void evaporateDelegate(double timespan);
+
+    /**
+     * Explore this infrastructure node.
+     *
+     * @param ants
+     * @param context
+     */
+    void exploreNode(List<ExplorationAnt> ants, IExplorationContext context);
 }
