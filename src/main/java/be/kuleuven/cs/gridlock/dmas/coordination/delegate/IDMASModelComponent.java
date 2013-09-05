@@ -17,45 +17,45 @@ import java.util.Set;
 public interface IDMASModelComponent {
 
     /**
-     * Default getter for infrastructure reference
+     * Default getter for infrastructure reference.
      *
-     * @return
+     * @return The infrastructure ref.
      */
     InfrastructureReference getInfrastructureReference();
 
     /**
-     * Default getter for delegated station instance
+     * Default getter for delegated station instance.
      *
-     * @return
+     * @return The station delegate.
      */
     IChargingStationReference getStationDelegate();
 
     /**
-     * Drop a registration pheromone
+     * Drop a registration pheromone.
      *
-     * @param phero
+     * @param phero The phero to drop.
      */
     void dropRegistration(IPheromone phero);
 
     /**
-     * Get all registrations
+     * Get all registrations.
      *
-     * @return
+     * @return The set of registration pheros.
      */
     Set<IPheromone> getRegistrations();
 
     /**
-     * Evaporate all information
+     * Evaporate all information.
      *
-     * @param timespan
+     * @param timespan The timespan to lapse.
      */
     void evaporateDelegate(double timespan);
 
     /**
      * Explore this infrastructure node.
      *
-     * @param ants
-     * @param context
+     * @param ants The ants to explore this node.
+     * @param context The context to explore them in.
      */
     void exploreNode(List<ExplorationAnt> ants, IExplorationContext context);
 }
