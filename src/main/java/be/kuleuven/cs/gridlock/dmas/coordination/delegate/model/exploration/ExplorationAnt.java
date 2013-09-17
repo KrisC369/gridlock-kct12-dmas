@@ -9,34 +9,38 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Representation of ants that explore the network for information about
+ * charging.
+ (cfr. delegateMAS)
  *
  * @author Kristof Coninx <kristof.coninx at student.kuleuven.be>
  */
 public class ExplorationAnt implements Cloneable {
 
-    private long carId;
+    private final long carId;
     private final Map<NodeReference, VirtualTime> chargeArrival;
     private final Map<NodeReference, VirtualTime> chargeDuration;
     private final Map<NodeReference, VirtualTime> chargeWait;
     private final Map<NodeReference, Float> chargeLevels;
-    private float maxEnergy;
+    private final float maxEnergy;
     private VirtualTime currentTime;
     private VirtualTime startTime;
     private float currentEnergy;
-    private float requiredEnergy;
+    private final float requiredEnergy;
     private final Map<NodeReference, VirtualTime> passedNodes;
     private final List<NodeReference> nodelist;
     private VehicleReference vehReference;
     private float consumption;
     private float traveltimecost;
-    private float waittimecost;
-    private float chargetimecost;
+    private final float waittimecost;
+    private final float chargetimecost;
 
     /**
      * General constructor for the antbuilder.
-     * @param carId 
-     * @param currentTime
-     * @param currentEnergy
+     *
+     * @param carId the id of the car.
+     * @param currentTime the current time at creation.
+     * @param currentEnergy the current energy of the ant.
      * @param requiredEnergy to reach destination.
      * @param maxEnergy maximum charge represented by battery.
      * @param consumption consumption of the represented vehicle.
@@ -44,10 +48,10 @@ public class ExplorationAnt implements Cloneable {
     public ExplorationAnt(Long carId, VirtualTime currentTime, float currentEnergy, float requiredEnergy, float maxEnergy, float consumption,
             float traveltimecost, float waittimecost, float chargetimecost) {
         this.carId = carId;
-        this.chargeArrival = new HashMap<NodeReference, VirtualTime>();
-        this.chargeDuration = new HashMap<NodeReference, VirtualTime>();
-        this.chargeWait = new HashMap<NodeReference, VirtualTime>();
-        this.chargeLevels = new HashMap<NodeReference, Float>();
+        this.chargeArrival = new HashMap<>();
+        this.chargeDuration = new HashMap<>();
+        this.chargeWait = new HashMap<>();
+        this.chargeLevels = new HashMap<>();
         this.currentTime = currentTime;
         this.startTime = currentTime;
         this.currentEnergy = currentEnergy;
@@ -56,10 +60,10 @@ public class ExplorationAnt implements Cloneable {
             throw new IllegalArgumentException();
         }
         this.vehReference = new VehicleReference(carId);
-        this.passedNodes = new HashMap<NodeReference, VirtualTime>();
+        this.passedNodes = new HashMap<>();
         this.consumption = consumption;
         this.maxEnergy = maxEnergy;
-        this.nodelist = new ArrayList<NodeReference>();
+        this.nodelist = new ArrayList<>();
         this.traveltimecost = traveltimecost;
         this.waittimecost = waittimecost;
         this.chargetimecost = chargetimecost;
@@ -67,6 +71,7 @@ public class ExplorationAnt implements Cloneable {
 
     /**
      * Private constructor for the cloning operation only.
+     *
      * @param carId
      * @param chargeArrival
      * @param chargeDuration
@@ -78,22 +83,22 @@ public class ExplorationAnt implements Cloneable {
      * @param passedNodes
      * @param lastNode
      * @param vehReference
-     * @param consumption 
+     * @param consumption
      */
     private ExplorationAnt(long carId, Map<NodeReference, VirtualTime> chargeArrival, Map<NodeReference, VirtualTime> chargeDuration, Map<NodeReference, VirtualTime> chargeWait, Map<NodeReference, Float> chargeLevels, float maxEnergy, VirtualTime currentTime, VirtualTime startTime, float currentEnergy, float requiredEnergy,
             Map<NodeReference, VirtualTime> passedNodes, List<NodeReference> lastNode, VehicleReference vehReference, float consumption, float traveltimecost, float waittimecost, float chargetimecost) {
         this.carId = carId;
-        this.chargeArrival = new HashMap<NodeReference, VirtualTime>(chargeArrival);
-        this.chargeDuration = new HashMap<NodeReference, VirtualTime>(chargeDuration);
-        this.chargeWait = new HashMap<NodeReference, VirtualTime>(chargeWait);
-        this.chargeLevels = new HashMap<NodeReference, Float>(chargeLevels);
+        this.chargeArrival = new HashMap<>(chargeArrival);
+        this.chargeDuration = new HashMap<>(chargeDuration);
+        this.chargeWait = new HashMap<>(chargeWait);
+        this.chargeLevels = new HashMap<>(chargeLevels);
         this.maxEnergy = maxEnergy;
         this.currentTime = currentTime;
         this.startTime = startTime;
         this.currentEnergy = currentEnergy;
         this.requiredEnergy = requiredEnergy;
-        this.passedNodes = new HashMap<NodeReference, VirtualTime>(passedNodes);
-        this.nodelist = new ArrayList<NodeReference>(lastNode);
+        this.passedNodes = new HashMap<>(passedNodes);
+        this.nodelist = new ArrayList<>(lastNode);
         this.vehReference = vehReference;
         this.consumption = consumption;
         this.traveltimecost = traveltimecost;
@@ -102,7 +107,7 @@ public class ExplorationAnt implements Cloneable {
     }
 
     public List<NodeReference> getVisitedStations() {
-        List<NodeReference> ret = new ArrayList<NodeReference>();
+        List<NodeReference> ret = new ArrayList<>();
         for (NodeReference r : nodelist) {
             if (chargeArrival.containsKey(r)) {
                 ret.add(r);
@@ -152,6 +157,11 @@ public class ExplorationAnt implements Cloneable {
         return cost;
     }
 
+    /**
+     * Default getter for the time traveled.
+     *
+     * @return a virtualtime instance.
+     */
     public VirtualTime getTravelTime() {
         return this.currentTime;
     }
@@ -167,14 +177,32 @@ public class ExplorationAnt implements Cloneable {
                 nodelist, vehReference, consumption, traveltimecost, waittimecost, chargetimecost);
     }
 
+    /**
+     * Default getter for the vehicle reference.
+     *
+     * @return a vehiclereference instance.
+     */
     public VehicleReference getVehicleReference() {
         return this.vehReference;
     }
 
+    /**
+     * Default getter for the timestamp.
+     *
+     * @return a virtualtime instance.
+     */
     VirtualTime getTimeStamp(NodeReference ref) {
         return passedNodes.get(ref);
     }
 
+    /**
+     * Add energy charge to this ant.
+     *
+     * @param chargeRate the rate of charge.
+     * @param ref the node to charge at.
+     * @param timeUntilCountLessThan the time to wait before being able to start
+     * charging.
+     */
     public void addCharge(float chargeRate, NodeReference ref, VirtualTime timeUntilCountLessThan) {
         if (!passedNodes.containsKey(ref)) {
             throw new IllegalArgumentException("Not passed this node yet.");
@@ -184,9 +212,16 @@ public class ExplorationAnt implements Cloneable {
         chargeDuration.put(ref, VirtualTime.createVirtualTime(dur));
         chargeWait.put(ref, timeUntilCountLessThan);
         currentEnergy = maxEnergy;
-        currentTime = currentTime.add(dur+timeUntilCountLessThan.getSeconds());
+        currentTime = currentTime.add(dur + timeUntilCountLessThan.getSeconds());
     }
 
+    /**
+     * Add a node to the visited node list.
+     *
+     * @param ref the reference of the node.
+     * @param distance the distance covered.
+     * @param duration the duration of the travel.
+     */
     public void addTraveledNode(NodeReference ref, double distance, VirtualTime duration) {
         double secs = duration.getSeconds();
         VirtualTime stamp = currentTime.add(secs);
@@ -198,10 +233,6 @@ public class ExplorationAnt implements Cloneable {
         this.chargeLevels.put(ref, this.currentEnergy);
     }
 
-    public boolean hasAchievedGoal() {
-        return this.currentEnergy >= this.requiredEnergy;
-    }
-
     private void subtractCharge(float consumed) {
         this.currentEnergy -= consumed;
     }
@@ -210,6 +241,11 @@ public class ExplorationAnt implements Cloneable {
         return ((maxEnergy - currentEnergy) / chargeRate) * 3600;
     }
 
+    /**
+     * Returns the last node visited.
+     *
+     * @return a nodereference instance.
+     */
     public NodeReference getLastVisitedNode() {
         if (nodelist.size() < 1) {
             return null;
@@ -217,11 +253,28 @@ public class ExplorationAnt implements Cloneable {
         return nodelist.get(nodelist.size() - 1);
     }
 
+    /**
+     * Get the chargelevel at a certain node passed.
+     *
+     * @param ref the nodereference.
+     * @return a float representing a chargelevel or null if ref not in passed
+     * nodes list.
+     */
     public float getChargeLevelAt(NodeReference ref) {
         return chargeLevels.get(ref);
     }
 
+    /**
+     * Get the time waited at a certain node passed.
+     *
+     * @param ref the nodereference.
+     * @return a float representing a chargelevel or -!F if ref not in passed
+     * nodes list.
+     */
     public double getWaitingTimeAt(NodeReference ref) {
+        if (this.chargeWait.get(ref) == null) {
+            return -1F;
+        }
         return this.chargeWait.get(ref).getSeconds();
     }
 }

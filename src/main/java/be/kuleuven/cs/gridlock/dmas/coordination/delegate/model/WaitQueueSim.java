@@ -29,10 +29,10 @@ public final class WaitQueueSim {
      * @param cap The total capacity of the queue.
      */
     protected WaitQueueSim(Collection<IRegistration> events, int cap) {
-        this.events = new TreeSet<VirtualTime>();
-        this.starts = new ArrayList<VirtualTime>();
-        this.origStarts = new ArrayList<VirtualTime>();
-        this.ends = new ArrayList<VirtualTime>();
+        this.events = new TreeSet<>();
+        this.starts = new ArrayList<>();
+        this.origStarts = new ArrayList<>();
+        this.ends = new ArrayList<>();
         this.cap = cap;
         for (IRegistration t : events) {
             this.events.add(t.getArrivalTime());
@@ -51,9 +51,9 @@ public final class WaitQueueSim {
      */
     protected ReturnAggr simulateWaiting(VirtualTime stopMark) {
         int i = 0;
-        final PriorityQueue<VirtualTime> q = new PriorityQueue<VirtualTime>();
-        final List<VirtualTime> retA = new ArrayList<VirtualTime>();
-        final List<VirtualTime> retB = new ArrayList<VirtualTime>();
+        final PriorityQueue<VirtualTime> q = new PriorityQueue<>();
+        final List<VirtualTime> retA = new ArrayList<>();
+        final List<VirtualTime> retB = new ArrayList<>();
         if (starts.size() > cap) {
             //i=cap-1;
             int count = 0;
@@ -85,8 +85,8 @@ public final class WaitQueueSim {
      */
     public static class ReturnAggr {
 
-        private List<VirtualTime> arrival;
-        private List<VirtualTime> departure;
+        private final List<VirtualTime> arrival;
+        private final List<VirtualTime> departure;
 
         public ReturnAggr(List<VirtualTime> arrival, List<VirtualTime> departure) {
             this.arrival = arrival;

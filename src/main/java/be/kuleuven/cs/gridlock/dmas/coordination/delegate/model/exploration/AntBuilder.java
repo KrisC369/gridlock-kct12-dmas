@@ -14,9 +14,9 @@ public class AntBuilder {
     public static final String TRAVELTIMECOST_KEY = "value.ant.cost.traveltime";
     public static final String WAITTIMECOST_KEY = "value.ant.cost.waittime";
     public static final String CHARGETIMECOST_KEY = "value.ant.cost.chargetime";
-    private float traveltimecost;
-    private float waittimecost;
-    private float chargetimecost;
+    private final float traveltimecost;
+    private final float waittimecost;
+    private final float chargetimecost;
 
     ExplorationAnt buildExplorationAnt(VirtualTime currentTime, IVehicleContext context, Path route) {
         long id = context.getEV().getVehicleEntity().getVehicleReference().getId();
