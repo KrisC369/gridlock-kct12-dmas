@@ -10,8 +10,7 @@ import java.util.Map;
 
 /**
  * Representation of ants that explore the network for information about
- * charging.
- (cfr. delegateMAS)
+ * charging. (cfr. delegateMAS)
  *
  * @author Kristof Coninx <kristof.coninx at student.kuleuven.be>
  */
@@ -30,8 +29,8 @@ public class ExplorationAnt implements Cloneable {
     private final Map<NodeReference, VirtualTime> passedNodes;
     private final List<NodeReference> nodelist;
     private VehicleReference vehReference;
-    private float consumption;
-    private float traveltimecost;
+    private final float consumptionRate;
+    private final float traveltimecost;
     private final float waittimecost;
     private final float chargetimecost;
 
@@ -61,7 +60,7 @@ public class ExplorationAnt implements Cloneable {
         }
         this.vehReference = new VehicleReference(carId);
         this.passedNodes = new HashMap<>();
-        this.consumption = consumption;
+        this.consumptionRate = consumption;
         this.maxEnergy = maxEnergy;
         this.nodelist = new ArrayList<>();
         this.traveltimecost = traveltimecost;
@@ -100,12 +99,17 @@ public class ExplorationAnt implements Cloneable {
         this.passedNodes = new HashMap<>(passedNodes);
         this.nodelist = new ArrayList<>(lastNode);
         this.vehReference = vehReference;
-        this.consumption = consumption;
+        this.consumptionRate = consumption;
         this.traveltimecost = traveltimecost;
         this.waittimecost = waittimecost;
         this.chargetimecost = chargetimecost;
     }
 
+    /**
+     * Returns the list of visited stations
+     *
+     * @return A list of nodereferences
+     */
     public List<NodeReference> getVisitedStations() {
         List<NodeReference> ret = new ArrayList<>();
         for (NodeReference r : nodelist) {
@@ -116,10 +120,18 @@ public class ExplorationAnt implements Cloneable {
         return ret;
     }
 
+    /**
+     * Should this ant be destroyed because of obsoleteness or not.
+     *
+     * @return
+     */
     public boolean isObsolete() {
         return testEnergeryLevels();
     }
 
+    /**
+     * Destroy this ant.
+     */
     public void destroy() {
 //        this.chargeArrival = null;
 //        this.chargeDuration = null;
@@ -135,6 +147,11 @@ public class ExplorationAnt implements Cloneable {
         return currentEnergy <= 0;
     }
 
+    /**
+     * Get the cost metric for this specific ant.
+     *
+     * @return a float representing the cost
+     */
     public float getCost() {
         float cost = 0;
         float scaleA = traveltimecost;
@@ -174,7 +191,7 @@ public class ExplorationAnt implements Cloneable {
     private ExplorationAnt doClone() {
         return new ExplorationAnt(carId, chargeArrival, chargeDuration, chargeWait, chargeLevels,
                 maxEnergy, currentTime, startTime, currentEnergy, requiredEnergy, passedNodes,
-                nodelist, vehReference, consumption, traveltimecost, waittimecost, chargetimecost);
+                nodelist, vehReference, consumptionRate, traveltimecost, waittimecost, chargetimecost);
     }
 
     /**
@@ -228,7 +245,7 @@ public class ExplorationAnt implements Cloneable {
         passedNodes.put(ref, stamp);
         this.nodelist.add(ref);
         currentTime = currentTime.add(secs);
-        float consumed = (float) (consumption * distance);
+        float consumed = (float) (consumptionRate * distance);
         subtractCharge(consumed);
         this.chargeLevels.put(ref, this.currentEnergy);
     }
