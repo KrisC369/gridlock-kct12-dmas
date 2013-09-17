@@ -106,7 +106,7 @@ public class ExplorationAnt implements Cloneable {
     }
 
     /**
-     * Returns the list of visited stations
+     * Returns the list of visited stations.
      *
      * @return A list of nodereferences
      */

@@ -16,16 +16,16 @@ public class Itinerary<R, T extends VirtualTime> implements Iterable<T> {
 
     public static class NoUnvisitedElementsAvailableException extends Exception {
     }
-    private List<R> list;
-    private Map<R, T> map;
+    private final List<R> list;
+    private final Map<R, T> map;
     private int index;
     private int count;
     private Map<R, Boolean> been;
 
     public Itinerary() {
-        this.list = new ArrayList<R>();
-        this.map = new HashMap<R, T>();
-        this.been = new HashMap<R, Boolean>();
+        this.list = new ArrayList<>();
+        this.map = new HashMap<>();
+        this.been = new HashMap<>();
         index = 0;
         count = -1;
     }
@@ -58,7 +58,7 @@ public class Itinerary<R, T extends VirtualTime> implements Iterable<T> {
     }
 
     public List<R> getKeys() {
-        return new ArrayList<R>(list);
+        return new ArrayList<>(list);
     }
 
     public boolean isEmpty() {
