@@ -15,44 +15,44 @@ import be.kuleuven.cs.gridlock.utilities.graph.Graph;
  */
 public interface IExplorationContext {
 
-	/**
-	 * Returns the model component reference.
-	 * 
-	 * @param ref
-	 *            A nodereference instance
-	 * @return An IDMAS model component instance.
-	 */
-	IDMASModelComponent getComponent(NodeReference ref);
+    /**
+     * Returns the model component reference.
+     * 
+     * @param ref
+     *            A nodereference instance
+     * @return An IDMAS model component instance.
+     */
+    IDMASModelComponent getComponent(NodeReference ref);
 
-	/**
-	 * Default getter.
-	 * 
-	 * @return the routing service.
-	 */
-	RoutingService getRouting();
+    /**
+     * Default getter.
+     * 
+     * @return the routing service.
+     */
+    RoutingService getRouting();
 
-	/**
-	 * Default getter.
-	 * 
-	 * @return the graph instance.
-	 */
-	Graph<NodeReference, LinkReference> getGraph();
+    /**
+     * Default getter.
+     * 
+     * @return the graph instance.
+     */
+    Graph<NodeReference, LinkReference> getGraph();
 
-	/**
-	 * Returns the waiting time for a certain spot at a node.
-	 * 
-	 * @param ref
-	 * @param ref
-	 *            the node ref to check.
-	 * @param totalChargingSpots
-	 *            the amount of charging spots available at the node.
-	 * @param travelTime
-	 *            The travel time to arrival.
-	 * @param vehicleReference
-	 *            the vehiclereference that performs the query.
-	 * @return A timeduration.
-	 */
-	VirtualTime getWaitingTimeForSpot(NodeReference ref,
-			int totalChargingSpots, VirtualTime travelTime,
-			VehicleReference vehicleReference);
+    /**
+     * Returns the waiting time for a certain spot at a node.
+     * 
+     * @param ref
+     * @param ref
+     *            the node ref to check.
+     * @param totalChargingSpots
+     *            the amount of charging spots available at the node.
+     * @param travelTime
+     *            The travel time to arrival.
+     * @param vehicleReference
+     *            the vehiclereference that performs the query.
+     * @return A timeduration.
+     */
+    VirtualTime getWaitingTimeForSpot(NodeReference ref,
+	    int totalChargingSpots, VirtualTime travelTime,
+	    VehicleReference vehicleReference);
 }
