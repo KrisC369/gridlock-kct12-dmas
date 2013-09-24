@@ -17,15 +17,29 @@ import be.kuleuven.cs.gridlock.simulation.events.EventController;
  */
 public class IntentionDMASBehavior implements IElecVehicleBehavior {
 
+    private static final double MAXTIME = 1800;
+    private static final double TIMECONVERSIONRATE = 3600;
     private long timeoutcounter;
     private final int period;
     private final IDMASModelAPI api;
     private final PheromoneFactory factory;
     private final double pessimism;
-    private static final double MAXTIME = 1800;
     private final EventController eventcont;
-    private static final double TIMECONVERSIONRATE = 3600;
 
+    /**
+     * Default constructor.
+     * 
+     * @param period
+     *            The period to send intentions with.
+     * @param api
+     *            The api to use.
+     * @param fact
+     *            The factory to get pheromones from.
+     * @param pessimism
+     *            The pessimism rate.
+     * @param eventcontroller
+     *            The eventcontroller to use.
+     */
     public IntentionDMASBehavior(int period, IDMASModelAPI api,
 	    PheromoneFactory fact, double pessimism,
 	    EventController eventcontroller) {
