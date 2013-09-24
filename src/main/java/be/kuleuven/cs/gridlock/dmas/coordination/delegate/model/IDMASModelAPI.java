@@ -16,7 +16,7 @@ import be.kuleuven.cs.gridlock.simulation.timeframe.TimeFrameConsumer;
  * @author Kristof Coninx <kristof.coninx at student.kuleuven.be>
  */
 public interface IDMASModelAPI extends SimulationComponent, TimeFrameConsumer,
-	IRegisterable<IDMASModelComponent> {
+        IRegisterable<IDMASModelComponent> {
 
     /**
      * Operation for dropping a pheromone at a specific location.
@@ -40,6 +40,6 @@ public interface IDMASModelAPI extends SimulationComponent, TimeFrameConsumer,
      *             when no route or itinerary is possible.
      */
     Itinerary<NodeReference, VirtualTime> getSequenceOfStations(
-	    IVehicleContext context, VirtualTime currentTime)
-	    throws NoRoutePossibleException;
+            IVehicleContext context, VirtualTime currentTime)
+            throws NoRoutePossibleException;
 }

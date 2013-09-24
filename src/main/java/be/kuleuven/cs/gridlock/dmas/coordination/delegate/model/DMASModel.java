@@ -53,26 +53,26 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
      *            the Exploration algorithm to use.
      */
     protected DMASModel(Graph<NodeReference, LinkReference> graph,
-	    IExplorationAlgorithm exploration) {
-	this.compLoc = new HashMap<NodeReference, IDMASModelComponent>();
-	this.exploration = exploration;
-	this.graph = graph;
+            IExplorationAlgorithm exploration) {
+        this.compLoc = new HashMap<NodeReference, IDMASModelComponent>();
+        this.exploration = exploration;
+        this.graph = graph;
     }
 
     @Override
     public void dropPheromone(NodeReference location, IPheromone phero) {
-	if (!isValid(phero)) {
-	    throw new IllegalArgumentException("invalid pheromone");
-	}
-	if (getComponent(location) == null) {
-	    throw new IllegalArgumentException("Node not registered");
-	}
-	getComponent(location).dropRegistration(phero);
+        if (!isValid(phero)) {
+            throw new IllegalArgumentException("invalid pheromone");
+        }
+        if (getComponent(location) == null) {
+            throw new IllegalArgumentException("Node not registered");
+        }
+        getComponent(location).dropRegistration(phero);
     }
 
     @Override
     public IDMASModelComponent getComponent(NodeReference ref) {
-	return compLoc.get(ref);
+        return compLoc.get(ref);
     }
 
     /**
@@ -83,154 +83,154 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
      * @return A set of pheromones.
      */
     public Set<IPheromone> getReservations(NodeReference ref) {
-	return getComponent(ref).getRegistrations();
+        return getComponent(ref).getRegistrations();
     }
 
     @Override
     public void initialize(SimulationContext simulationContext) {
-	exploration.initialize(this);
-	this.routing = ServiceFactory.Helper.load(RoutingServiceLoader.class,
-		simulationContext.getConfiguration());
+        exploration.initialize(this);
+        this.routing = ServiceFactory.Helper.load(RoutingServiceLoader.class,
+                simulationContext.getConfiguration());
     }
 
     @Override
     public Collection<? extends TimeFrameConsumer> getConsumers() {
-	return Collections.singleton(this);
+        return Collections.singleton(this);
     }
 
     @Override
     public Collection<? extends SimulationComponent> getSubComponents() {
-	return Collections.emptyList();
+        return Collections.emptyList();
     }
 
     @Override
     public void consume(VirtualTime currentTime, double timeFrameDuration) {
-	evaporatePheromones(timeFrameDuration);
+        evaporatePheromones(timeFrameDuration);
     }
 
     @Override
     public boolean continueSimulation() {
-	return !getAllPheromones().isEmpty();
+        return !getAllPheromones().isEmpty();
     }
 
     @Override
     public void register(IDMASModelComponent t) {
-	if (!isValid(t)) {
-	    throw new IllegalArgumentException(
-		    "already registered or something.");
-	}
-	this.compLoc.put(new NodeReference((Long) t
-		.getInfrastructureReference().getId()), t);
+        if (!isValid(t)) {
+            throw new IllegalArgumentException(
+                    "already registered or something.");
+        }
+        this.compLoc.put(new NodeReference((Long) t
+                .getInfrastructureReference().getId()), t);
     }
 
     @Override
     public void unregister(IDMASModelComponent t) {
-	if (compLoc.containsValue(t)) {
-	    throw new IllegalArgumentException(
-		    "Component is not registered yet.");
-	}
-	NodeReference toRem = null;
-	for (Entry<NodeReference, IDMASModelComponent> entry : compLoc
-		.entrySet()) {
-	    if (entry.getValue().equals(t)) {
-		toRem = entry.getKey();
-	    }
-	}
-	compLoc.remove(toRem);
+        if (compLoc.containsValue(t)) {
+            throw new IllegalArgumentException(
+                    "Component is not registered yet.");
+        }
+        NodeReference toRem = null;
+        for (Entry<NodeReference, IDMASModelComponent> entry : compLoc
+                .entrySet()) {
+            if (entry.getValue().equals(t)) {
+                toRem = entry.getKey();
+            }
+        }
+        compLoc.remove(toRem);
     }
 
     private boolean isValid(IDMASModelComponent t) {
-	if (t == null) {
-	    return false;
-	}
-	if (this.compLoc.containsValue(t)) {
-	    return false;
-	}
-	return true;
+        if (t == null) {
+            return false;
+        }
+        if (this.compLoc.containsValue(t)) {
+            return false;
+        }
+        return true;
     }
 
     private boolean isValid(IPheromone phero) {
-	// TODO add checks.
-	if (phero == null) {
-	    return false;
-	}
-	return true;
+        // TODO add checks.
+        if (phero == null) {
+            return false;
+        }
+        return true;
     }
 
     private void evaporatePheromones(double timeFrameDuration) {
-	for (IDMASModelComponent comp : this.compLoc.values()) {
-	    comp.evaporateDelegate(timeFrameDuration);
-	}
+        for (IDMASModelComponent comp : this.compLoc.values()) {
+            comp.evaporateDelegate(timeFrameDuration);
+        }
     }
 
     private Collection<IPheromone> getAllPheromones() {
-	List<IPheromone> toRetList = new ArrayList<IPheromone>();
-	for (NodeReference ref : this.compLoc.keySet()) {
-	    toRetList.addAll(getComponent(ref).getRegistrations());
-	}
-	return toRetList;
+        List<IPheromone> toRetList = new ArrayList<IPheromone>();
+        for (NodeReference ref : this.compLoc.keySet()) {
+            toRetList.addAll(getComponent(ref).getRegistrations());
+        }
+        return toRetList;
     }
 
     @Override
     public RoutingService getRouting() {
-	return routing;
+        return routing;
     }
 
     @Override
     public Graph<NodeReference, LinkReference> getGraph() {
-	return graph;
+        return graph;
     }
 
     private Set<IRegistration> getRegistrations(NodeReference ref,
-	    VehicleReference vref) {
-	final Set<IPheromone> phers = getComponent(ref).getRegistrations();
-	Set<IRegistration> ret = new HashSet<IRegistration>();
-	for (IPheromone s : phers) {
-	    if (s.getOriginRef() != vref.getId()) {
-		ret.add(s.getRegistration());
-	    }
-	}
-	return ret;
+            VehicleReference vref) {
+        final Set<IPheromone> phers = getComponent(ref).getRegistrations();
+        Set<IRegistration> ret = new HashSet<IRegistration>();
+        for (IPheromone s : phers) {
+            if (s.getOriginRef() != vref.getId()) {
+                ret.add(s.getRegistration());
+            }
+        }
+        return ret;
     }
 
     private <T extends Comparable<? super T>> List<T> asSortedList(
-	    Collection<T> c) {
-	List<T> list = new ArrayList<T>(c);
-	java.util.Collections.sort(list);
-	return list;
+            Collection<T> c) {
+        List<T> list = new ArrayList<T>(c);
+        java.util.Collections.sort(list);
+        return list;
     }
 
     @Override
     public Itinerary<NodeReference, VirtualTime> getSequenceOfStations(
-	    IVehicleContext context, VirtualTime currentTime)
-	    throws NoRoutePossibleException {
-	return exploration.getSequenceOfStations(context, currentTime);
+            IVehicleContext context, VirtualTime currentTime)
+            throws NoRoutePossibleException {
+        return exploration.getSequenceOfStations(context, currentTime);
     }
 
     @Override
     public VirtualTime getWaitingTimeForSpot(NodeReference ref,
-	    int totalChargingSpots, VirtualTime travelTime,
-	    VehicleReference vehicleReference) {
-	return internalWaitingTimeForSpot(totalChargingSpots, travelTime,
-		asSortedList(getRegistrations(ref, vehicleReference)));
+            int totalChargingSpots, VirtualTime travelTime,
+            VehicleReference vehicleReference) {
+        return internalWaitingTimeForSpot(totalChargingSpots, travelTime,
+                asSortedList(getRegistrations(ref, vehicleReference)));
     }
 
     private VirtualTime internalWaitingTimeForSpot(int totalChargingSpots,
-	    VirtualTime travelTime, List<IRegistration> regs) {
+            VirtualTime travelTime, List<IRegistration> regs) {
 
-	if (regs.size() < totalChargingSpots) {
-	    return VirtualTime.createVirtualTime(0);
-	}
-	final WaitQueueSim wqs = new WaitQueueSim(regs, totalChargingSpots);
-	ReturnAggr simulateWaiting = wqs.simulateWaiting(travelTime);
-	List<VirtualTime> dep = simulateWaiting.getDeparture();
-	if (dep.isEmpty()) {
-	    return VirtualTime.createVirtualTime(0);
-	}
-	double waitsecs = dep.get(dep.size() - 1).sub(travelTime).getSeconds();
-	if (waitsecs < 0) {
-	    return VirtualTime.createVirtualTime(0);
-	}
-	return VirtualTime.createVirtualTime(waitsecs);
+        if (regs.size() < totalChargingSpots) {
+            return VirtualTime.createVirtualTime(0);
+        }
+        final WaitQueueSim wqs = new WaitQueueSim(regs, totalChargingSpots);
+        ReturnAggr simulateWaiting = wqs.simulateWaiting(travelTime);
+        List<VirtualTime> dep = simulateWaiting.getDeparture();
+        if (dep.isEmpty()) {
+            return VirtualTime.createVirtualTime(0);
+        }
+        double waitsecs = dep.get(dep.size() - 1).sub(travelTime).getSeconds();
+        if (waitsecs < 0) {
+            return VirtualTime.createVirtualTime(0);
+        }
+        return VirtualTime.createVirtualTime(waitsecs);
     }
 }

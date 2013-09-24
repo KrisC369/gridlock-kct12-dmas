@@ -16,7 +16,7 @@ import be.kuleuven.cs.gridlock.utilities.graph.Graph;
 public final class DMASModelBuilder {
 
     private DMASModelBuilder() {
-	// no-op
+        // no-op
     }
 
     /**
@@ -29,9 +29,9 @@ public final class DMASModelBuilder {
      * @return A dmas model API instance.
      */
     public static IDMASModelAPI buildModel(Configuration config,
-	    Graph<NodeReference, LinkReference> graph) {
-	AntBuilder ab = new AntBuilder(config);
-	IExplorationAlgorithm algo = new ExplorationAlgorithm(ab);
-	return new DMASModel(graph, algo);
+            Graph<NodeReference, LinkReference> graph) {
+        AntBuilder ab = new AntBuilder(config);
+        IExplorationAlgorithm algo = new ExplorationAlgorithm(ab);
+        return new DMASModel(graph, algo);
     }
 }

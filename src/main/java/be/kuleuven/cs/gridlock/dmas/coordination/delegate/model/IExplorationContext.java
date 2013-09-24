@@ -53,6 +53,6 @@ public interface IExplorationContext {
      * @return A timeduration.
      */
     VirtualTime getWaitingTimeForSpot(NodeReference ref,
-	    int totalChargingSpots, VirtualTime travelTime,
-	    VehicleReference vehicleReference);
+            int totalChargingSpots, VirtualTime travelTime,
+            VehicleReference vehicleReference);
 }
