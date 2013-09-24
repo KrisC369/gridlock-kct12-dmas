@@ -92,7 +92,7 @@ public final class WaitQueueSim {
 		private final List<VirtualTime> departure;
 
 		/**
-		 * Simple constructor
+		 * Simple constructor.
 		 * 
 		 * @param arrival
 		 *            the list of arrivaltimes.

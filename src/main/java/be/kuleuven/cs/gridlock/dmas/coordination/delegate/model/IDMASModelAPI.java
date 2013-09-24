@@ -12,17 +12,34 @@ import be.kuleuven.cs.gridlock.simulation.timeframe.TimeFrameConsumer;
 
 /**
  * API for operations DMASModel users can call on this coordination model.
+ * 
  * @author Kristof Coninx <kristof.coninx at student.kuleuven.be>
  */
-public interface IDMASModelAPI extends SimulationComponent, TimeFrameConsumer, IRegisterable<IDMASModelComponent> {
+public interface IDMASModelAPI extends SimulationComponent, TimeFrameConsumer,
+		IRegisterable<IDMASModelComponent> {
 
-    /**
-     * Operation for dropping a pheromone at a specific location.
-     * @param location The location where the pheromone should be dropped at.
-     * @param phero The pheromone object that needs to be dropped.
-     */
-    public void dropPheromone(NodeReference location, IPheromone phero);
+	/**
+	 * Operation for dropping a pheromone at a specific location.
+	 * 
+	 * @param location
+	 *            The location where the pheromone should be dropped at.
+	 * @param phero
+	 *            The pheromone object that needs to be dropped.
+	 */
+	void dropPheromone(NodeReference location, IPheromone phero);
 
-    public Itinerary<NodeReference,VirtualTime> getSequenceOfStations(IVehicleContext context, VirtualTime currentTime) 
-            throws NoRoutePossibleException;
+	/**
+	 * Retunrs the sequence of stations suggested by this model.
+	 * 
+	 * @param context
+	 *            The vehicle context.
+	 * @param currentTime
+	 *            The current time.
+	 * @return An itinerary instance.
+	 * @throws NoRoutePossibleException
+	 *             when no route or itinerary is possible.
+	 */
+	Itinerary<NodeReference, VirtualTime> getSequenceOfStations(
+			IVehicleContext context, VirtualTime currentTime)
+			throws NoRoutePossibleException;
 }
