@@ -31,7 +31,7 @@ public final class DMASModelBuilder {
     public static IDMASModelAPI buildModel(Configuration config,
             Graph<NodeReference, LinkReference> graph) {
         AntBuilder ab = new AntBuilder(config);
-        IExplorationAlgorithm algo = new ExplorationAlgorithm(ab);
-        return new DMASModel(graph, algo);
+        IExplorationAlgorithm algo = new ExplorationAlgorithm(ab, graph);
+        return new DMASModel(algo);
     }
 }

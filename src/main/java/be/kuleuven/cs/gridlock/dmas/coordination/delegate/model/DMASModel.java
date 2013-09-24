@@ -23,12 +23,10 @@ import be.kuleuven.cs.gridlock.routing.RoutingService;
 import be.kuleuven.cs.gridlock.routing.RoutingServiceLoader;
 import be.kuleuven.cs.gridlock.simulation.SimulationComponent;
 import be.kuleuven.cs.gridlock.simulation.SimulationContext;
-import be.kuleuven.cs.gridlock.simulation.api.LinkReference;
 import be.kuleuven.cs.gridlock.simulation.api.NodeReference;
 import be.kuleuven.cs.gridlock.simulation.api.VehicleReference;
 import be.kuleuven.cs.gridlock.simulation.api.VirtualTime;
 import be.kuleuven.cs.gridlock.simulation.timeframe.TimeFrameConsumer;
-import be.kuleuven.cs.gridlock.utilities.graph.Graph;
 
 /**
  * An implementation of the DMASAPI in a DMASModel.
@@ -42,7 +40,6 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
     private final Map<NodeReference, IDMASModelComponent> compLoc;
     private final IExplorationAlgorithm exploration;
     private RoutingService routing;
-    private final Graph<NodeReference, LinkReference> graph;
 
     /**
      * Default constructor.
@@ -52,11 +49,9 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
      * @param exploration
      *            the Exploration algorithm to use.
      */
-    protected DMASModel(Graph<NodeReference, LinkReference> graph,
-            IExplorationAlgorithm exploration) {
+    protected DMASModel(IExplorationAlgorithm exploration) {
         this.compLoc = new HashMap<NodeReference, IDMASModelComponent>();
         this.exploration = exploration;
-        this.graph = graph;
     }
 
     @Override
@@ -174,11 +169,6 @@ public class DMASModel implements IDMASModelAPI, IExplorationContext {
     @Override
     public RoutingService getRouting() {
         return routing;
-    }
-
-    @Override
-    public Graph<NodeReference, LinkReference> getGraph() {
-        return graph;
     }
 
     private Set<IRegistration> getRegistrations(NodeReference ref,

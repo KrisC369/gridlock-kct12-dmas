@@ -2,11 +2,9 @@ package be.kuleuven.cs.gridlock.dmas.coordination.delegate.model;
 
 import be.kuleuven.cs.gridlock.dmas.coordination.delegate.IDMASModelComponent;
 import be.kuleuven.cs.gridlock.routing.RoutingService;
-import be.kuleuven.cs.gridlock.simulation.api.LinkReference;
 import be.kuleuven.cs.gridlock.simulation.api.NodeReference;
 import be.kuleuven.cs.gridlock.simulation.api.VehicleReference;
 import be.kuleuven.cs.gridlock.simulation.api.VirtualTime;
-import be.kuleuven.cs.gridlock.utilities.graph.Graph;
 
 /**
  * The interface of a vehicle context specification in a dmas model.
@@ -30,13 +28,6 @@ public interface IExplorationContext {
      * @return the routing service.
      */
     RoutingService getRouting();
-
-    /**
-     * Default getter.
-     * 
-     * @return the graph instance.
-     */
-    Graph<NodeReference, LinkReference> getGraph();
 
     /**
      * Returns the waiting time for a certain spot at a node.
