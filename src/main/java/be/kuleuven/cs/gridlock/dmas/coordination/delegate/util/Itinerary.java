@@ -12,6 +12,10 @@ import be.kuleuven.cs.gridlock.simulation.api.VirtualTime;
  * Utility class for representing itineraries. Basically just a list and map
  * combination.
  * 
+ * @param <R>
+ *          the generic type
+ * @param <T>
+ *          the generic type
  * @author Kristof Coninx <kristof.coninx at student.kuleuven.be>
  */
 public class Itinerary<R, T extends VirtualTime> implements Iterable<T> {
@@ -23,7 +27,7 @@ public class Itinerary<R, T extends VirtualTime> implements Iterable<T> {
   private final Map<R, Boolean> been;
 
   /**
-   * Default constructor
+   * Default constructor.
    */
   public Itinerary() {
     this.list = new ArrayList<>();
@@ -100,7 +104,7 @@ public class Itinerary<R, T extends VirtualTime> implements Iterable<T> {
   }
 
   /**
-   * Returns if empty
+   * Returns if empty.
    * 
    * @return boolean.
    */
@@ -164,7 +168,7 @@ public class Itinerary<R, T extends VirtualTime> implements Iterable<T> {
   }
 
   /**
-   * Returns first R not in hasbeen list
+   * Returns first R not in hasbeen list.
    * 
    * @return an R.
    * @throws NoUnvisitedElementsAvailableException
@@ -206,6 +210,7 @@ public class Itinerary<R, T extends VirtualTime> implements Iterable<T> {
    * Simple remove operation.
    * 
    * @param r
+   *          the r
    */
   public void remove(R r) {
     if (!list.contains(r)) {
@@ -218,6 +223,8 @@ public class Itinerary<R, T extends VirtualTime> implements Iterable<T> {
 
   /**
    * Simple iterator operation without remove support.
+   * 
+   * @return the iterator
    */
   @Override
   public Iterator<T> iterator() {
